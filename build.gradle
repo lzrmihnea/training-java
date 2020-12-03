@@ -1,0 +1,25 @@
+plugins {
+	id 'java'
+}
+
+group = 'ro.fasttrackit'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.11' // same thing as: compile 'org.apache.commons:commons-lang3:3.11'
+	// we can have keywords like: compile, testCompile, implementation, testImplementation, runtime, jar(for direct .jar reference) etc.
+
+	compile "org.apache.poi:poi:3.17"
+	compile "org.apache.poi:poi-ooxml:3.17"
+
+	// TODO some other class testCompile group: 'junit', name: 'junit', version: '4.13.1'
+}
+
+test {
+	useJUnitPlatform()
+}
