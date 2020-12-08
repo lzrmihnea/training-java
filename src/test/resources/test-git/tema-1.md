@@ -1,2 +1,4 @@
 Aceasta nu este o tema.
-Am uitat sa modific ceva, mai pun niste text.
+
+
+Aceasta modificare a fost facuta direct pe GitHub.
