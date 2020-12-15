@@ -10,7 +10,7 @@ public class UniversityIocService {
     // The dependency of the `studentRepository` was injected via the constructor
     // This method of reversion the Control of the Dependency Injection is what
     // is known as Inversion of Control
-    public UniversityIocService(StudentRepository dependencyInjectedRepository) {
+    public UniversityIocService(StudentRepository dependencyInjectedRepository) { // One method of injecting the repository
         this.studentRepository = dependencyInjectedRepository;
     }
 
@@ -18,7 +18,7 @@ public class UniversityIocService {
         return studentRepository.createStudent(lastName, firstName);
     }
 
-    public void setStudentRepository(StudentRepository studentRepository) {
+    public void setStudentRepository(StudentRepository studentRepository) { // Another method of injecting the repository
         this.studentRepository = studentRepository;
     }
 }

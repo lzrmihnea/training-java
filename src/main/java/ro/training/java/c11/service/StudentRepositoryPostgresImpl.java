@@ -5,7 +5,7 @@ import ro.training.java.c11.model.Student;
 public class StudentRepositoryPostgresImpl implements StudentRepository {
     @Override
     public Student createStudent(String lastName, String firstname) {
-        System.out.println("\nYou are now running on PostgreSQL");
+        System.out.println("\nYou are now running on PostgreSQL in Production");
         Student newStudent = new Student();
         newStudent.setLastName(lastName);
         newStudent.setFirstName(firstname);
