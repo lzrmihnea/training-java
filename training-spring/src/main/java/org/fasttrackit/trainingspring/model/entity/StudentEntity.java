@@ -13,9 +13,9 @@ public class StudentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column private String firstname;
-    @Column private String lastname;
-    @Column private Date dateOfBirth;
+    @Column(name = "first_name") private String firstname;
+    @Column(name = "last_name") private String lastname;
+    @Column(name = "date_of_birth") private Date dateOfBirth;
 
     public Long getId() {
         return id;

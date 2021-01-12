@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -20,9 +24,26 @@ public class StudentService {
         this.repository = injectedRepository;
     }
 
-    @PostConstruct
-    public void maiZiCeva() {
-        System.out.println("s-a construit bean-ul");
+
+    public Student getStudentById(Long studentId) {
+        //pre java8 => `repository.findById(studentId)` COULD RETURN A NULL, so you always had to check for that
+        //after java8 => `repository.findById(studentId)` ALWAYS RETURNED OPTIONAL, which was never null, so you could always call methods directly on it => easier to use
+        Optional<StudentEntity> foundEntity = repository.findById(studentId);
+
+        // v1
+        if (foundEntity.isPresent()) { // easier than `if(foundEntity != null)`
+            StudentEntity entity = foundEntity.get();
+            Student response = mapEntityToStudentResponse(entity);
+            // return response
+        }
+
+        // v2
+        if (!foundEntity.isPresent()) {
+            return null;
+        }
+        return foundEntity
+                .map(entityToMap -> mapEntityToStudentResponse(entityToMap))
+                .get();
     }
 
     public Student createNewStudent(Student request) {
@@ -33,12 +54,64 @@ public class StudentService {
 
         StudentEntity savedEntity = this.repository.save(newStudent1);
 
-        Student responseObject = new Student();
-        responseObject.setId(savedEntity.getId());
-        responseObject.setFirstname(savedEntity.getFirstname());
-        responseObject.setLastname(savedEntity.getLastname());
-        responseObject.setDateOfBirth(savedEntity.getDateOfBirth());
-        return responseObject;
+        return mapEntityToStudentResponse(savedEntity);
+    }
+
+    public Student updateStudent(Student req) {
+        StudentEntity entityToUpdate = new StudentEntity();
+        entityToUpdate.setId(req.getId()); // ! here is the diff between UPDATE and SAVE
+        entityToUpdate.setLastname(req.getLastname());
+        entityToUpdate.setFirstname(req.getFirstname());
+        entityToUpdate.setDateOfBirth(req.getDateOfBirth());
+
+        StudentEntity updatedEntity = this.repository.save(entityToUpdate);
+
+        return mapEntityToStudentResponse(updatedEntity);
+    }
+
+    public List<Student> findAllStudents() {
+
+        //v1: pre-java8
+        List<StudentEntity> allEntities = this.repository.findAll();
+
+        List<Student> responseList = new ArrayList<>();
+        for(StudentEntity entity : allEntities) {
+            responseList.add(mapEntityToStudentResponse(entity));
+        }
+        //return responseList;
+
+
+        //v2 post-java8
+        return this.repository.findAll()
+                .stream()
+                .map(entity -> mapEntityToStudentResponse(entity))
+                .collect(Collectors.toList());
+    }
+
+    public void deleteStudentById(Long id) {
+        this.repository.deleteById(id);
+    }
+
+    public Student findStudentBy(String firstname) {
+        return this.repository.findStudentByFirstName(firstname)
+                .map(entity -> mapEntityToStudentResponse(entity))
+                .get();
+    }
+
+    public List<Student> findStudentsBy(String lastname, String firstname) {
+        return this.repository.findStudentEntitiesByFirstnameEqualsOrLastnameEquals(firstname, lastname)
+                .stream()
+                .map(entity -> mapEntityToStudentResponse(entity))
+                .collect(Collectors.toList());
+    }
+
+    private Student mapEntityToStudentResponse(StudentEntity entity) {
+        Student response = new Student();
+        response.setId(entity.getId());
+        response.setFirstname(entity.getFirstname());
+        response.setLastname(entity.getLastname());
+        response.setDateOfBirth(entity.getDateOfBirth());
+        return response;
     }
 
 }
