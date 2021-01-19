@@ -13,8 +13,10 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 
     //@Query("select s from student s where s.first_name = :firstName", nativeQuery = true) // SQL
-    @Query("select s from student s where s.firstname = :firstName")// JPQL (Java Persistence Query Language), not SQL
+    @Query(value = "select s from student s where s.firstname = :firstName")// JPQL (Java Persistence Query Language), not SQL
     Optional<StudentEntity> findStudentByFirstName(@Param("firstName") String firstname);
 
     List<StudentEntity> findStudentEntitiesByFirstnameEqualsOrLastnameEquals(String firstname, String lastname);
+
+    List<StudentEntity> findAllByIdIn(List<Long> ids);
 }

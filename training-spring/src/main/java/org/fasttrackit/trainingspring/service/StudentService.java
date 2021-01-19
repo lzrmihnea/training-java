@@ -6,7 +6,8 @@ import org.fasttrackit.trainingspring.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +21,12 @@ public class StudentService {
 
     private final StudentRepository repository;
 
-    public StudentService(StudentRepository injectedRepository) {
+    private final EntityManager entityManager;
+
+    public StudentService(StudentRepository injectedRepository,
+                          EntityManager entityManager) {
         this.repository = injectedRepository;
+        this.entityManager = entityManager;
     }
 
 
@@ -75,7 +80,7 @@ public class StudentService {
         List<StudentEntity> allEntities = this.repository.findAll();
 
         List<Student> responseList = new ArrayList<>();
-        for(StudentEntity entity : allEntities) {
+        for (StudentEntity entity : allEntities) {
             responseList.add(mapEntityToStudentResponse(entity));
         }
         //return responseList;
@@ -98,6 +103,22 @@ public class StudentService {
                 .get();
     }
 
+    @Transactional
+    public void renameAllStudents(List<Long> studentIds, String newFirstname) {
+        List<StudentEntity> allById = this.repository.findAllByIdIn(studentIds);
+
+        allById.forEach(student ->
+        {
+            double randomNumber = Math.random() * 10;
+            if(randomNumber>5) {
+                throw new RuntimeException("n-am chef");
+            }
+
+            student.setFirstname(newFirstname);
+            this.repository.save(student);
+        });
+    }
+
     public List<Student> findStudentsBy(String lastname, String firstname) {
         return this.repository.findStudentEntitiesByFirstnameEqualsOrLastnameEquals(firstname, lastname)
                 .stream()
@@ -112,6 +133,10 @@ public class StudentService {
         response.setLastname(entity.getLastname());
         response.setDateOfBirth(entity.getDateOfBirth());
         return response;
+    }
+
+    private EntityManager em() {
+        return entityManager;
     }
 
 }
