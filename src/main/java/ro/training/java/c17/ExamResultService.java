@@ -1,6 +1,5 @@
 package ro.training.java.c17;
 
-import ro.training.java.c17.builder.ExamResultBuilder;
 import ro.training.java.c17.model.ExamResult;
 import ro.training.java.c17.model.Student;
 
@@ -15,9 +14,8 @@ public class ExamResultService {
     }
 
     public void buildExamResult() {
-        ExamResultBuilder builder = new ExamResultBuilder();
-
-        ExamResult newExam = builder.result(10)
+        ExamResult newExam = new ExamResult.Builder()
+                .result(10)
                 .examName("fizica")
                 .date(Date.valueOf(LocalDate.of(2020, 02, 01)))
                 .id(10L)

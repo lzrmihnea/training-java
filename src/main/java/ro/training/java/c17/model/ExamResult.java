@@ -49,4 +49,34 @@ public class ExamResult {
     public void setResult(Integer result) {
         this.result = result;
     }
+
+    public static class Builder {
+        private ExamResult toBuild = new ExamResult();
+
+        public Builder id(Long id) {
+            this.toBuild.setId(id);
+            return this;
+        }
+
+        public Builder date(Date date) {
+            this.toBuild.setDate(date);
+            return this;
+        }
+
+        public Builder examName(String examName) {
+            this.toBuild.setExamName(examName);
+            return this;
+        }
+
+        public Builder result(Integer result){
+            this.toBuild.setResult(result);
+            return this;
+        }
+
+        public ExamResult build() {
+            return toBuild;
+        }
+
+    }
+
 }
