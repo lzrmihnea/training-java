@@ -1,5 +1,6 @@
 package org.fasttrackit.messageservice.message;
 
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,17 +13,19 @@ import java.time.Instant;
 public class HelloSender {
 
     private final RabbitTemplate template;
+    private final FanoutExchange fanout;
     private final Queue queue;
 
-    public HelloSender(RabbitTemplate template, Queue queue) {
+    public HelloSender(RabbitTemplate template, FanoutExchange fanout, Queue queue1) {
         this.template = template;
-        this.queue = queue;
+        this.fanout = fanout;
+        this.queue = queue1;
     }
 
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void sendMessageEverySecond() {
         String message = "Hello world " + Date.from(Instant.now());
-        this.template.convertAndSend(queue.getName(), message);
-        System.out.println(" [x] Sent '" + message + "'");
+        this.template.convertAndSend(fanout.getName(), "", message);
+//        System.out.println(" [x] Sent '" + message + "'");
     }
 }
