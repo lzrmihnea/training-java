@@ -14,7 +14,7 @@ public class ExamResultService {
     }
 
     public void buildExamResult() {
-        ExamResult newExam = new ExamResult.Builder()
+        ExamResult newExam = ExamResult.builder()
                 .result(10)
                 .examName("fizica")
                 .date(Date.valueOf(LocalDate.of(2020, 02, 01)))

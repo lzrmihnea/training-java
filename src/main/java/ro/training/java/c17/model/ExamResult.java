@@ -18,6 +18,10 @@ public class ExamResult {
         return clone;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public Long getId() {
         return id;
     }
