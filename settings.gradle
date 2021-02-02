@@ -1,3 +1,4 @@
 rootProject.name = 'training-java'
 
 include 'training-spring'
+include 'message-service'
