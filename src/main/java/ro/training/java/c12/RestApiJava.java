@@ -1,6 +1,7 @@
 package ro.training.java.c12;
 
 import com.sun.net.httpserver.HttpServer;
+import ro.training.java.c17.Singleton;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -9,6 +10,12 @@ import java.net.InetSocketAddress;
 public class RestApiJava {
 
     public static void main(String[] args) throws IOException {
+
+        Singleton singleton = Singleton.getInstance();
+
+
+
+
         HttpServer server = HttpServer.create(new InetSocketAddress(8013),0);
 
         // We define the /api/salut endpoint
