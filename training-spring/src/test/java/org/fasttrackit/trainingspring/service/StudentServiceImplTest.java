@@ -14,10 +14,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentServiceTest {
+public class StudentServiceImplTest {
 
     @InjectMocks
-    private StudentService service;
+    private StudentServiceImpl service;
 
     // The mock will create an object of type "StudentRepository" which will not do anything!
     // If we want any method call from the "repository" to be done, we must manually define it with Mockito.when(...

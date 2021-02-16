@@ -15,6 +15,7 @@ public class HelloSender {
     private final RabbitTemplate template;
     private final FanoutExchange fanout;
     private final Queue queue;
+    private Integer count = 0;
 
     public HelloSender(RabbitTemplate template, FanoutExchange fanout, Queue queue1) {
         this.template = template;
@@ -22,10 +23,10 @@ public class HelloSender {
         this.queue = queue1;
     }
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 500)
+    @Scheduled(fixedDelay = 4000, initialDelay = 500)
     public void sendMessageEverySecond() {
-        String message = "Hello world " + Date.from(Instant.now());
+        String message = "Hello world " + Date.from(Instant.now()) + " " + count++;
         this.template.convertAndSend(fanout.getName(), "", message);
-//        System.out.println(" [x] Sent '" + message + "'");
+        System.out.println(" [x] Sent '" + message + "'");
     }
 }

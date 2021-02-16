@@ -3,6 +3,7 @@ package org.fasttrackit.trainingspring.controller;
 import org.fasttrackit.trainingspring.controller.model.RenameStudentsDto;
 import org.fasttrackit.trainingspring.model.Student;
 import org.fasttrackit.trainingspring.service.StudentService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
